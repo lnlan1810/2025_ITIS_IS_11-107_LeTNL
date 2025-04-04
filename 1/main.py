@@ -21,7 +21,8 @@ def clean_text(html):
         tag.decompose()
     text = soup.get_text(separator='\n')
     text = re.sub(r'[^а-яёА-ЯЁ\s]', '', text)
-    text = re.sub(r'\n+', '\n', text).strip()
+    lines = [line.strip() for line in text.split('\n') if line.strip()]
+    text = '\n'.join(lines)
     return text
 
 def is_valid_link(href, base_domain):
