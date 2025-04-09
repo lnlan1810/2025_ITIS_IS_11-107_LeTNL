@@ -70,6 +70,6 @@ if __name__ == '__main__':
     with open('3/results.txt', 'w', encoding='utf-8') as result_file:
         for query in queries:
             result = evaluate_boolean_query(query)
-            output_text = f"Query: {query}\n→ Matching documents: {result}\n\n"
+            output_text = f"Запрос: {query}\n Подходящие документы: {result}\n\n"
             print(output_text, end='')            
             result_file.write(output_text)        
