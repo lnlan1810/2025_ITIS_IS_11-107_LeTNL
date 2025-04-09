@@ -8,8 +8,7 @@ def load_stop_words(file_path: str) -> set[str]:
     with open(file_path, 'r', encoding='utf-8') as f:
         return set(line.strip() for line in f if line.strip())
 
-STOP_WORDS = load_stop_words('/Users/laptoptt/Documents/2025_ITIS_IS_11-107_LeTNL/2/stop_words.txt')  # Điều chỉnh đường dẫn nếu cần
-
+STOP_WORDS = load_stop_words('/Users/laptoptt/Documents/2025_ITIS_IS_11-107_LeTNL/2/stop_words.txt')
 def is_valid_word(lemma: str) -> bool:
     return re.match(r'^[а-яА-ЯёЁa-zA-Z]+-?[а-яА-ЯёЁa-zA-Z]*$', lemma) is not None
 
