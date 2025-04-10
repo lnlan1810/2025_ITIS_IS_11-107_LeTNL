@@ -57,7 +57,6 @@ def evaluate_boolean_query(query: str):
 
     return sorted(tokens[0]) if tokens else []
 
-# 🧪 Test các biểu thức mẫu
 if __name__ == '__main__':
     queries = [
         'свободный & модель | материал',
