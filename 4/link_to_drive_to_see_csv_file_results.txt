@@ -1,0 +1,3 @@
+файл tf.csv: https://drive.google.com/drive/u/0/folders/1XBdZ-PZDJ4M83I0l273VhDl2DJYyrmih
+файл tf_idf.csv: https://drive.google.com/drive/u/0/folders/1XBdZ-PZDJ4M83I0l273VhDl2DJYyrmih
+файл idf.csv: https://drive.google.com/drive/u/0/folders/1XBdZ-PZDJ4M83I0l273VhDl2DJYyrmih
