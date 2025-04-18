@@ -6,7 +6,7 @@ import pandas as pd
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from four.main import compute_tf, compute_idf, compute_tf_idf
 from pymystem3 import Mystem
-from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics.pairwise import cosine_similarity 
 
 mystem = Mystem()
 
