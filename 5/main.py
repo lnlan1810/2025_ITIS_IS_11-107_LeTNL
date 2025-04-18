@@ -23,7 +23,6 @@ def query_to_vector(query: str, idf: dict[str, float], total_docs_count: int):
 
     for word, count in words_counter.items():
         tf = count / query_length
-        # Если слово не в IDF, используем минимальный IDF
         word_idf = idf.get(word, math.log10(total_docs_count))
         query_vector[word] = tf * word_idf
 
@@ -42,6 +41,9 @@ def compute_cosine_similarity(doc_vector: dict[str, float], query_vector:  dict[
 
 def vector_search_multi(queries: [str], tf_idf: dict[str, dict[str, float]], idf: dict[str, float],
                         total_docs_count: int, output_txt_file: str, output_csv_file: str):
+    """
+    Функция выполняет поиск по нескольким запросам и сохраняет результаты в файлы.
+    """
     results = []
     with open(output_txt_file, 'w') as txt_file:
         for query in queries:
