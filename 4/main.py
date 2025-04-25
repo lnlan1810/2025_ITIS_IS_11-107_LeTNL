@@ -31,6 +31,7 @@ def compute_idf(corpus: dict[str, list[str]]) -> dict[str, float]:
 
 def compute_tf_idf(tf: dict[str, dict[str, float]], idf: dict[str, float]) -> dict[str, dict[str, float]]:
     """
+    TF-IDF (комбини́рованную ме́трику ва́жности слов) для всех докуме́нтов.
     Вычисляет TF-IDF = TF * IDF для каждого слова в каждом документе
     """
     tf_idf: dict[str, dict[str, float]] = {}
