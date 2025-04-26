@@ -13,17 +13,16 @@ mystem = Mystem()
 
 def query_to_vector(query: str, idf: dict[str, float], total_docs_count: int):
     """
-    Преобразует запрос в вектор TF-IDF, с применением лемматизации к каждому слову.
+    Преобразует запро́с в ве́ктор TF-IDF, с примене́нием лемматиза́ции к ка́ждому сло́ву.
     """
-    words = mystem.lemmatize(query.lower())
-    words = [word for word in words if word.strip() and word not in [' ', '\n']]
-    
-    words_counter = Counter(words)
-    total_counts = sum(words_counter.values()) 
-    query_vector = {}
+    words = mystem.lemmatize(query.lower()) 
+    words = [word for word in words if word.strip() and word not in [' ', '\n']] 
+    query_length = len(words) 
+    words_counter = Counter(words) 
+    query_vector: dict[str, float] = {} 
 
     for word, count in words_counter.items():
-        tf = count / total_counts
+        tf = count / query_length 
         word_idf = idf.get(word, math.log10(total_docs_count)) 
         query_vector[word] = tf * word_idf
 
