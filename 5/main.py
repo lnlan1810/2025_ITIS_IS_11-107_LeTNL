@@ -12,9 +12,6 @@ mystem = Mystem()
 
 
 def query_to_vector(query: str, idf: dict[str, float], total_docs_count: int):
-    """
-    Преобразует запро́с в ве́ктор TF-IDF, с примене́нием лемматиза́ции к ка́ждому сло́ву.
-    """
     words = mystem.lemmatize(query.lower()) 
     words = [word for word in words if word.strip() and word not in [' ', '\n']] 
     query_length = len(words) 
@@ -30,9 +27,6 @@ def query_to_vector(query: str, idf: dict[str, float], total_docs_count: int):
 
 
 def compute_cosine_similarity(doc_vector: dict[str, float], query_vector:  dict[str, float]) -> float:
-    """
-    Вычисляет косинусное сходство между двумя векторами.
-    """
     all_words = list(set(doc_vector.keys()).union(set(query_vector.keys())))
     doc_vector = [doc_vector.get(word, 0) for word in all_words]
     query_vector = [query_vector.get(word, 0) for word in all_words]
