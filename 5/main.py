@@ -36,63 +36,33 @@ def compute_cosine_similarity(doc_vector: dict[str, float], query_vector:  dict[
 
 
 def vector_search_multi(queries: [str], tf_idf: dict[str, dict[str, float]], idf: dict[str, float],
-                      total_docs_count: int, output_txt_file: str, output_csv_file: str):
+                        total_docs_count: int, output_txt_file: str, output_csv_file: str):
     """
     Функция выполняет поиск по нескольким запросам и сохраняет результаты в файлы.
     """
-    unique_words = set()
-    for query in queries:
-        words = mystem.lemmatize(query.lower())
-        words = [word for word in words if word.strip() and word not in [' ', '\n']]
-        unique_words.update(words)
-    
-    word_vectors = {}
-    for word in unique_words:
-        word_vectors[word] = query_to_vector(word, idf, total_docs_count)
-    
     results = []
-    
     with open(output_txt_file, 'w') as txt_file:
         for query in queries:
-            words = mystem.lemmatize(query.lower())
-            words = [word for word in words if word.strip() and word not in [' ', '\n']]
-            
-            combinations = []
-            for i in range(1, len(words)+1):
-                comb_query = ' '.join(words[:i])
-                combinations.append(comb_query)
-            
-            query_result = {'Query': query}
-            
-            for doc in corpus.keys():
-                doc_vector = tf_idf[doc]
-                
-                for comb in combinations:
-                    comb_vector = query_to_vector(comb, idf, total_docs_count)
-                    score = compute_cosine_similarity(doc_vector, comb_vector)
-                    query_result[f"{doc}_{comb.replace(' ', '+')}"] = score
-            
-            results.append(query_result)
-            
             query_vector = query_to_vector(query, idf, total_docs_count)
-            scores = {}
+            scores: dict[str, float] = {}
             for doc, doc_vector in tf_idf.items():
                 scores[doc] = compute_cosine_similarity(doc_vector, query_vector)
-            
+
             sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
             txt_file.write(f"Query: {query}\n")
             for doc, score in sorted_scores:
                 if score == 0:
                     break
-                txt_file.write(f"Document: {doc}, Score: {score}\n")
+                result_line = f"Document: {doc}, Score: {score}\n"
+                txt_file.write(result_line)
+                results.append({"Query": query, "Document": doc, "Score": score})
             txt_file.write("\n")
-    
-    df = pd.DataFrame(results)
-    
-    df = df.set_index('Query').T.reset_index()
-    df.to_csv(output_csv_file, index=False)
+
+    results_df = pd.DataFrame(results)
+    results_df.to_csv(output_csv_file, index=False)
     print(f"Результаты поиска сохранены в {output_txt_file} и {output_csv_file}.")
-    
+
+
 if __name__ == '__main__':
     path = '/Users/laptoptt/Documents/2025_ITIS_IS_11-107_LeTNL/2/tokens/'
     corpus = {}
