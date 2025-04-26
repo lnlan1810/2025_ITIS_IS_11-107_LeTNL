@@ -79,7 +79,7 @@ if __name__ == '__main__':
     idf = compute_idf(corpus)
     tf_idf = compute_tf_idf(tf, idf)
 
-    queries = ['свободная', 'свободная энциклопедия', 'свободная энциклопедия читать']
+    queries = ['элемент', 'элемент битный', 'элемент битный алгоритм']
     output_txt = '5/vector_search.txt'
     output_csv = '5/vector_search.csv'
     vector_search_multi(queries, tf_idf, idf, len(corpus), output_txt, output_csv)
