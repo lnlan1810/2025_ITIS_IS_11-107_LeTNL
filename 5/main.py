@@ -17,13 +17,14 @@ def query_to_vector(query: str, idf: dict[str, float], total_docs_count: int):
     """
     words = mystem.lemmatize(query.lower())
     words = [word for word in words if word.strip() and word not in [' ', '\n']]
-    query_length = len(words)
+    
     words_counter = Counter(words)
-    query_vector: dict[str, float] = {}
+    total_counts = sum(words_counter.values()) 
+    query_vector = {}
 
     for word, count in words_counter.items():
-        tf = count / query_length
-        word_idf = idf.get(word, math.log10(total_docs_count))
+        tf = count / total_counts
+        word_idf = idf.get(word, math.log10(total_docs_count)) 
         query_vector[word] = tf * word_idf
 
     return query_vector
