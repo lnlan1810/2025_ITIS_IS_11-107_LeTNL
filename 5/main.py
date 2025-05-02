@@ -34,33 +34,32 @@ def compute_cosine_similarity(doc_vector: dict[str, float], query_vector:  dict[
     query_vector = [query_vector.get(word, 0) for word in all_words]
     return cosine_similarity([doc_vector], [query_vector])[0][0]
 
-
 def vector_search_multi(queries: [str], tf_idf: dict[str, dict[str, float]], idf: dict[str, float],
-                        total_docs_count: int, output_txt_file: str, output_csv_file: str):
-    """
-    Функция выполняет поиск по нескольким запросам и сохраняет результаты в файлы.
-    """
-    results = []
-    with open(output_txt_file, 'w') as txt_file:
-        for query in queries:
-            query_vector = query_to_vector(query, idf, total_docs_count)
-            scores: dict[str, float] = {}
-            for doc, doc_vector in tf_idf.items():
-                scores[doc] = compute_cosine_similarity(doc_vector, query_vector)
-
-            sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-            txt_file.write(f"Query: {query}\n")
-            for doc, score in sorted_scores:
-                if score == 0:
-                    break
-                result_line = f"Document: {doc}, Score: {score}\n"
-                txt_file.write(result_line)
-                results.append({"Query": query, "Document": doc, "Score": score})
-            txt_file.write("\n")
-
-    results_df = pd.DataFrame(results)
-    results_df.to_csv(output_csv_file, index=False)
-    print(f"Результаты поиска сохранены в {output_txt_file} и {output_csv_file}.")
+                      total_docs_count: int, output_csv_file: str):
+    sorted_results = {}
+    
+    for query in queries:
+        query_vector = query_to_vector(query, idf, total_docs_count)
+        scores = {}
+        
+        for doc, doc_vector in tf_idf.items():
+            score = compute_cosine_similarity(doc_vector, query_vector)
+            if score > 0:
+                scores[doc] = score
+        
+        sorted_results[query] = [
+            f"{doc} {score:.6f}" 
+            for doc, score in sorted(scores.items(), key=lambda x: x[1], reverse=True)
+        ]
+    
+    max_len = max(len(results) for results in sorted_results.values())
+    
+    data = {}
+    for query in queries:
+        data[query] = sorted_results[query] + [""] * (max_len - len(sorted_results[query]))
+    
+    pd.DataFrame(data).to_csv(output_csv_file, index=False)
+    print(f"Результаты поиска сохранены в {output_csv_file}")
 
 
 if __name__ == '__main__':
@@ -75,6 +74,6 @@ if __name__ == '__main__':
     tf_idf = compute_tf_idf(tf, idf)
 
     queries = ['элемент', 'элемент битный', 'элемент битный алгоритм']
-    output_txt = '5/vector_search.txt'
     output_csv = '5/vector_search.csv'
-    vector_search_multi(queries, tf_idf, idf, len(corpus), output_txt, output_csv)
+    vector_search_multi(queries, tf_idf, idf, len(corpus), output_csv)
+    
