@@ -8,7 +8,7 @@ from four.main import compute_tf, compute_idf, compute_tf_idf
 from pymystem3 import Mystem
 from sklearn.metrics.pairwise import cosine_similarity 
 
-mystem = Mystem()
+mystem = Mystem() 
 
 
 def query_to_vector(query: str, idf: dict[str, float], total_docs_count: int):
